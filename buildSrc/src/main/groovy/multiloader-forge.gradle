@@ -1,0 +1,47 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.minecraftforge.gradle'
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${mcVersion}-${forgeVersion}"
+
+    implementation("net.sf.jopt-simple:jopt-simple:5.0.4") { version { strictly '5.0.4' } }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+minecraft {
+    mappings channel: 'official', version: mcVersion
+
+    def at = project(":XPlat").file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) accessTransformer = at.absolutePath\
+
+    runs {
+        client {
+            property 'forge.enabledGameTestNamespaces', modId
+            workingDirectory file("run/client")
+            ideaModule "$rootProject.name.${project.name}.main"
+            taskName 'ForgeClient'
+
+            mods {
+                "${modId}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', modId
+            workingDirectory file('run/server')
+            ideaModule "$rootProject.name.${project.name}.main"
+            taskName 'ForgeServer'
+
+            mods {
+                "${modId}" {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}

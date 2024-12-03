@@ -1,0 +1,41 @@
+plugins {
+    id 'multiloader-common'
+    id 'fabric-loom'
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${mcVersion}"
+    mappings loom.layered {
+        officialMojangMappings ()
+        parchment "org.parchmentmc.data:parchment-${parchmentMc}:${parchmentVersion}@zip"
+    }
+
+    modImplementation "net.fabricmc:fabric-loader:${fabricLoader}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabricApi}"
+
+    compileOnly 'com.google.code.findbugs:jsr305:+'
+}
+
+loom {
+    def aw = project(":XPlat").file("src/main/resources/${modId}.accesswidener")
+    if ( aw.exists() ) accessWidenerPath = aw
+
+    mixin {
+        defaultRefmapName = "${modId}.refmap.json"
+    }
+
+    runs {
+        client {
+            client ()
+            configName = 'Fabric Client'
+            ideConfigGenerated = true
+            runDir 'runs/client'
+        }
+        server {
+            server ()
+            configName = 'Fabric Server'
+            ideConfigGenerated = true
+            runDir 'runs/server'
+        }
+    }
+}

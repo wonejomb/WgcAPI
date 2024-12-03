@@ -1,0 +1,38 @@
+plugins {
+    id 'multiloader-common'
+    id 'net.neoforged.gradle.userdev'
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${neoVersion}"
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+minecraft {
+    def at = project(":XPlat").file("src/main/resources/META-INF/accesstransformer.cfg")
+    if ( at.exists() ) accessTransformers.file at.absolutePath
+}
+
+subsystems {
+    parchment {
+        minecraftVersion = "${parchmentMc}"
+        mappingsVersion = "${parchmentVersion}"
+    }
+}
+
+runs {
+    configureEach {
+        systemProperty 'neoforge.logging.markers', 'REGISTRIES'
+        systemProperty 'neoforge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
+    }
+
+    client {
+        systemProperty 'neoforge.enabledGameTestNamespaces', "${modId}"
+    }
+    server {
+        systemProperty 'neoforge.enabledGameTestNamespaces', "${modId}"
+        programArgument '--nogui'
+    }
+}
