@@ -6,11 +6,11 @@ plugins {
 }
 
 def getSecrets () {
-    Properties properties = new Properties();
+    Properties properties = new Properties()
     if ( rootProject.file("secrets.properties").exists() )
         properties.load(new FileInputStream(rootProject.file("secrets.properties")))
 
-    return properties;
+    return properties
 }
 
 def getChangelog () {
