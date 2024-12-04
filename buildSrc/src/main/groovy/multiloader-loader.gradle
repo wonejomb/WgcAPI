@@ -21,8 +21,8 @@ dependencies {
         }
     }
 
-    commonJava project(path: ":XPlat", configurations: 'commonJava')
-    commonResources project(path: ':XPlat', configurations: 'commonResources')
+    commonJava project(path: ":XPlat", configuration: 'commonJava')
+    commonResources project(path: ':XPlat', configuration: 'commonResources')
 }
 
 tasks.named('compileJava', JavaCompile) {

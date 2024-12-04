@@ -6,24 +6,23 @@ plugins {
 dependencies {
     minecraft "net.minecraftforge:forge:${mcVersion}-${forgeVersion}"
 
-    implementation("net.sf.jopt-simple:jopt-simple:5.0.4") { version { strictly '5.0.4' } }
+    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
 minecraft {
-    mappings channel: 'official', version: mcVersion
+    mappings channel: 'official', version: "${mcVersion}"
+    reobf = false
+    copyIdeResources = true
 
     def at = project(":XPlat").file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) accessTransformer = at.absolutePath\
+    if ( at.exists() ) accessTransformer = file(at.absolutePath)
 
     runs {
         client {
-            property 'forge.enabledGameTestNamespaces', modId
-            workingDirectory file("run/client")
-            ideaModule "$rootProject.name.${project.name}.main"
-            taskName 'ForgeClient'
-
+            property 'forge.enabledGameTestNamespaces', "${modId}"
+            workingDirectory file('runs/client')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Client'
             mods {
                 "${modId}" {
                     source sourceSets.main
@@ -32,11 +31,10 @@ minecraft {
         }
 
         server {
-            property 'forge.enabledGameTestNamespaces', modId
-            workingDirectory file('run/server')
-            ideaModule "$rootProject.name.${project.name}.main"
-            taskName 'ForgeServer'
-
+            property 'forge.enabledGameTestNamespaces', "${modId}"
+            workingDirectory file('runs/server')
+            ideaModule "${rootProject.name}.${project.name}.main"
+            taskName 'Server'
             mods {
                 "${modId}" {
                     source sourceSets.main
@@ -44,4 +42,10 @@ minecraft {
             }
         }
     }
+}
+
+sourceSets.forEach {
+    def dir = layout.buildDirectory.dir("sourceSets/${it.name}")
+    it.output.resourcesDir = dir
+    it.java.destinationDirectory = dir
 }

@@ -6,8 +6,30 @@ pluginManagement {
         exclusiveContent {
             forRepository {
                 maven {
+                    name = 'ForgeMaven'
+                    url = uri('https://maven.minecraftforge.net/')
+                }
+            }
+            filter {
+                includeGroupByRegex("net\\.minecraftforge.*")
+            }
+        }
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = 'ParchmentMaven'
+                    url = uri('https://maven.parchmentmc.org')
+                }
+            }
+            filter {
+                includeGroupByRegex("org\\.parchmentmc.*")
+            }
+        }
+        exclusiveContent {
+            forRepository {
+                maven {
                     name = 'FabricMaven'
-                    url = uri('https://maven.fabricmc.net/')
+                    url = uri('https://maven.fabricmc.net')
                 }
             }
             filter {
@@ -15,28 +37,28 @@ pluginManagement {
                 includeGroup('fabric-loom')
             }
         }
-
         exclusiveContent {
             forRepository {
                 maven {
-                    name = 'ForgeMaven'
-                    url = uri('https://maven.minecraftforge.net/')
-                }
-            }
-            filter {
-                includeGroupAndSubgroups('net.minecraftforge')
-            }
-        }
-
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = 'NeoMaven'
-                    url = uri('https://maven.neoforged.net/releases/')
+                    name = 'NeoforgedMaven'
+                    url = uri('https://maven.neoforged.net/releases')
                 }
             }
             filter {
                 includeGroupByRegex("net\\.neoforged.*")
+                includeGroup('codechicken')
+                includeGroup('net.covers1624')
+            }
+        }
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = 'Sponge'
+                    url = uri('https://repo.spongepowered.org/repository/maven-public/')
+                }
+            }
+            filter {
+                includeGroupByRegex("org\\.spongepowered.*")
             }
         }
     }
@@ -59,7 +81,9 @@ plugins {
 }
 
 rootProject.name = 'WgcCore'
+
 include 'XPlat'
 include 'Fabric'
 include 'Neoforge'
+include 'Forge'
 
